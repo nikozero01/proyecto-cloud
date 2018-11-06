@@ -1,6 +1,9 @@
 #!/usr/bin/python
-from flask import Flask, jsonify, abort, make_response, request
+from flask import Flask, jsonify, abort, make_response, request, render_template
 import pandas as pd
+import io
+import matplotlib.pyplot as plt
+import base64
 
 app = Flask(__name__)
 df = None
@@ -54,6 +57,16 @@ def getGroupByAggregationsByFields():
 	data.update({'max':df.groupby(groupBy)[field].max()})
 	data.update({'median':df.groupby(groupBy)[field].median()})
 	return str(data)
+
+@app.route('/fig')
+def fig():
+	plt.plot([1,2,3,4], [1,2,3,4])
+	img = io.BytesIO()
+	plt.savefig(img,format='png')
+	img.seek(0)
+	plot_url = base64.b64encode(img.getvalue()).decode()
+	return render_template('test.html',plot_url=plot_url) 
+	#return '<img src="data:image/png;base64,{}">'.format(plot_url)
 
 if __name__ == '__main__':
     df = pd.read_csv('/myapp/gapminder.tsv', sep='\t')
