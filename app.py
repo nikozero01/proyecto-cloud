@@ -11,18 +11,17 @@ def index():
 	global df
 	return str(df.shape)
 
-@app.route('/getGroupByAggregationsByFields', methods = ['POST'])
+@app.route('/getAggregationsByFields', methods = ['POST'])
 def getAggregationsByFields():
-        global df
-        field = request.json.get('field',"")
-		groupBy = request.json.get('groupBy',"")
-        data = {}
-        for indexFieldArray in fieldArray:
-                data.update({'mean'+indexFieldArray:df[indexFieldArray].mean()})
-                data.update({'min'+indexFieldArray:df[indexFieldArray].min()})
-                data.update({'max'+indexFieldArray:df[indexFieldArray].max()})
-                data.update({'median'+indexFieldArray:df[indexFieldArray].median()})
-        return str(data)
+	global df
+	field = request.json.get('field',"")
+	data = {}
+	for indexFieldArray in fieldArray:
+		data.update({'mean'+indexFieldArray:df[indexFieldArray].mean()})
+		data.update({'min'+indexFieldArray:df[indexFieldArray].min()})
+		data.update({'max'+indexFieldArray:df[indexFieldArray].max()})
+		data.update({'median'+indexFieldArray:df[indexFieldArray].median()})
+	return str(data)
 
 @app.route("/encabezado", methods = [ 'GET' ])
 def encabezado():
@@ -46,16 +45,16 @@ def seturl():
 
 @app.route('/getGroupByAggregationsByFields', methods = ['POST'])
 def getGroupByAggregationsByFields():
-        global df
-        field = request.json.get('field',"")
-		groupBy = request.json.get('groupBy',"")
-        data = {}
-		data.update({'mean':df.groupby(groupBy)[field].mean()})
-        data.update({'min':df.groupby(groupBy)[field].min()})
-        data.update({'max':df.groupby(groupBy)[field].max()})
-        data.update({'median':df.groupby(groupBy)[field].median()})
-        return str(data)
+	global df
+	field = request.json.get('field',"")
+	groupBy = request.json.get('groupBy',"")
+	data = {}
+	data.update({'mean':df.groupby(groupBy)[field].mean()})
+	data.update({'min':df.groupby(groupBy)[field].min()})
+	data.update({'max':df.groupby(groupBy)[field].max()})
+	data.update({'median':df.groupby(groupBy)[field].median()})
+	return str(data)
 
 if __name__ == '__main__':
-    df = pd.read_csv('/myhome/gapminder.tsv', sep='\t')
+    df = pd.read_csv('/myapp/gapminder.tsv', sep='\t')
     app.run(host='0.0.0.0',debug=True)
