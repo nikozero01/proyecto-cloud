@@ -18,8 +18,9 @@ def index():
 def getAggregationsByFields():
 	global df
 	field = request.json.get('field',"")
+	fieldArrays = field.split(",")
 	data = {}
-	for indexFieldArray in fieldArray:
+	for indexFieldArray in fieldArrays:
 		data.update({'mean'+indexFieldArray:df[indexFieldArray].mean()})
 		data.update({'min'+indexFieldArray:df[indexFieldArray].min()})
 		data.update({'max'+indexFieldArray:df[indexFieldArray].max()})
@@ -51,22 +52,27 @@ def getGroupByAggregationsByFields():
 	global df
 	field = request.json.get('field',"")
 	groupBy = request.json.get('groupBy',"")
+	groupByArray = groupBy.split(",")
 	data = {}
-	data.update({'mean':df.groupby(groupBy)[field].mean()})
-	data.update({'min':df.groupby(groupBy)[field].min()})
-	data.update({'max':df.groupby(groupBy)[field].max()})
-	data.update({'median':df.groupby(groupBy)[field].median()})
+	data.update({'mean':df.groupby(groupByArray)[field].mean()})
+	data.update({'min':df.groupby(groupByArray)[field].min()})
+	data.update({'max':df.groupby(groupByArray)[field].max()})
+	data.update({'median':df.groupby(groupByArray)[field].median()})
 	return str(data)
 
 @app.route('/fig')
 def fig():
-	plt.plot([1,2,3,4], [1,2,3,4])
+	groupBy = request.args.get('groupBy',default = 'year')
+	field = request.args.get('field',default = 'gdpPercap')
+	groupByArray = groupBy.split(",")
+	ax = df[groupByArray].plot(kind='bar', title =groupBy, figsize=(15, 10), legend=True, fontsize=12)
+	ax.set_xlabel(groupBy, fontsize=12)
+	ax.set_ylabel(groupBy, fontsize=12)
 	img = io.BytesIO()
 	plt.savefig(img,format='png')
 	img.seek(0)
 	plot_url = base64.b64encode(img.getvalue()).decode()
-	return render_template('test.html',plot_url=plot_url) 
-	#return '<img src="data:image/png;base64,{}">'.format(plot_url)
+	return render_template('test.html',plot_url=plot_url)
 
 if __name__ == '__main__':
     df = pd.read_csv('/myapp/gapminder.tsv', sep='\t')

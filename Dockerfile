@@ -9,12 +9,12 @@ RUN pip3 install pandas numpy
 
 RUN pip3 install matplotlib
 
-COPY app.py /myapp/app.py
+#COPY app.py /myapp/app.py
 
-COPY gapminder.tsv /myapp/gapminder.tsv
+#COPY gapminder.tsv /myapp/gapminder.tsv
 
-COPY /templates/test.html /myapp/templates/test.html
+#COPY /templates/test.html /myapp/templates/test.html
 
-ENTRYPOINT [ "python3" ]
+#ENTRYPOINT [ "python3" ]
 
-CMD [ "/myapp/app.py" ]
+#CMD [ "/myapp/app.py" ]
