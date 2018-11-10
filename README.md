@@ -50,3 +50,5 @@ El acceso a este *end-point* se hace a traves del metodo GET de la siguiente man
 curl -i http://localhost:5000/fig?field=pop&groupBy=year,continent
 ```
 
+YOTUBE https://www.youtube.com/watch?v=i9oQCNQFock&t=612s
+
