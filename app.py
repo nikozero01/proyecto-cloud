@@ -63,11 +63,9 @@ def getGroupByAggregationsByFields():
 @app.route('/fig')
 def fig():
 	groupBy = request.args.get('groupBy',default = 'year')
-	field = request.args.get('field',default = 'gdpPercap')
+	field = request.args.get('field',default = 'pop')
 	groupByArray = groupBy.split(",")
-	ax = df[groupByArray].plot(kind='bar', title =groupBy, figsize=(15, 10), legend=True, fontsize=12)
-	ax.set_xlabel(groupBy, fontsize=12)
-	ax.set_ylabel(groupBy, fontsize=12)
+	ax = df.groupby(groupByArray)[field].mean().plot(kind='bar', figsize=(15, 10), legend=false, fontsize=12)
 	img = io.BytesIO()
 	plt.savefig(img,format='png')
 	img.seek(0)
