@@ -65,7 +65,7 @@ def fig():
 	groupBy = request.args.get('groupBy',default = 'year')
 	field = request.args.get('field',default = 'pop')
 	groupByArray = groupBy.split(",")
-	ax = df.groupby(groupByArray)[field].mean().plot(kind='bar', figsize=(15, 10), legend=false, fontsize=12)
+	ax = df.groupby(groupByArray)[field].mean().plot(kind='bar', figsize=(15, 10), fontsize=12)
 	img = io.BytesIO()
 	plt.savefig(img,format='png')
 	img.seek(0)
