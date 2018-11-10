@@ -44,3 +44,9 @@ curl -i -H "Content-Type: application/json" -X POST -d '{ "field": "pop"}' http:
 curl -i -H "Content-Type: application/json" -X POST -d '{ "field": "pop,year"}' http://localhost:5000/getAggregationsByFields
 ```
 
+* [/fig](http://localhost:5000/fig) este URI permite graficar un par de datos y sacar el promedio  *dataframe*. 
+El acceso a este *end-point* se hace a traves del metodo GET de la siguiente manera.
+```
+curl -i http://localhost:5000/fig?field=pop&groupBy=year,continent
+```
+
